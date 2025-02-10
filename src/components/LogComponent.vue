@@ -4,19 +4,14 @@
       <label>Log</label>
     </div>
     <div class="calculationLog">
-      <div class="calculation" v-for="entry in log" :key="entry">{{ entry }}</div>
+      <div class="calculation" v-for="(entry, index) in log" :key="index">
+        {{ entry }}
+      </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'CalculatorLog',
-  inject: {
-    log: Array as () => string[], // Define log as an array of strings
-  },
-}
-</script>
+<script lang="ts" src="@/scripts/LogScript.ts"></script>
 
 <style scoped>
 #logTitle {

@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from 'vue-router' // Import 'RouteRecordRaw' as a
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Calculator',
+    name: 'CalculatorComponent',
     component: () => import('@/components/CalculatorComponent.vue'),
   },
 ]
