@@ -21,9 +21,10 @@
       <button class="option" id="equals" @click="handleClick('=')">=</button>
       <button class="option" id="divide" @click="handleOperatorClick('/')">/</button>
     </div>
-  </div>
-  <div id="log">
-    <LogComponent :log="log" />
+
+    <div id="log">
+      <LogComponent :log="log" />
+    </div>
   </div>
 </template>
 

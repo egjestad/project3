@@ -1,49 +1,45 @@
 header {
   display: flex;
   justify-content: center;
-  line-height: 1.5;
-  max-height: 100vh;
-  font-family: Copperplate, times, serif;
   font-size: 50px;
   grid-area: header;
 }
 
-#logContainer {
-  grid-area: log;
-  display: grid;
-  gap: 4px;
-  align-content: center;
-  margin: 10px;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
 nav {
+  grid-area: nav;
   width: 100%;
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
 }
 
 nav a.router-link-exact-active {
   color: var(--color-text);
+  background-color: rgb(105, 118, 94);
+  border: 2px solid var(--color-border);
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+nav a:hover {
+  background-color: hsla(160, 100%, 37%, 0.2);
+  border: 2px solid var(--color-border);
 }
 
 nav a {
   display: inline-block;
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
+  background-color: var(--color-background-btn);
+  color: var(--color-text);
+  margin-inline: 5%;
 }
 
 nav a:first-of-type {
-  border: 0;
+  border: 2px solid var(--color-border);
+}
+
+.content {
+  grid-area: main;
+  padding: 1rem;
+  text-align: center;
 }
 
 @media (min-width: 1024px) {
@@ -53,10 +49,6 @@ nav a:first-of-type {
     padding-right: calc(var(--section-gap) / 2);
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
   header .wrapper {
     display: flex;
     place-items: flex-start;
@@ -64,11 +56,7 @@ nav a:first-of-type {
   }
 
   nav {
-    text-align: left;
-    margin-left: -1rem;
     font-size: 1rem;
-
     padding: 1rem 0;
-    margin-top: 1rem;
   }
 }

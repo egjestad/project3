@@ -1,12 +1,40 @@
 #calculator {
-  grid-area: calculatorView;
-
+  display: grid;
+  grid-area: main;
+  grid-template-areas: 'calculatorContainer log';
+  grid-template-columns: 50% 20%;
+  justify-content: center;
+  padding: 10px;
+}
+#logContainer {
+  grid-area: log;
+  align-content: center;
+  padding: 2px;
+  margin: auto 10%;
+  background-color: rgb(130, 155, 109);
+  border: 2px solid rgba(88, 109, 60, 0.56);
+  display: flex;
   height: 100%;
+  max-height: inherit;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.calculation {
+  display: flex;
+  justify-content: left;
+  margin: 0 10%;
+}
+#logTitle {
+  font-size: x-large;
+  font-weight: bold;
+  font-family: Copperplate, times, serif;
+  color: #313a28;
+  margin: 3% 10%;
 }
 
 #calculatorContainer {
   display: grid;
-  justify-content: center;
+  grid-area: calculatorContainer;
   gap: 4px;
   grid-template-areas:
     'input input input op'
@@ -18,7 +46,7 @@
   grid-template-columns: 100px 100px 100px 100px;
   grid-template-rows: 100px 100px 100px 100px 100px;
   align-content: center;
-
+  margin: auto;
   max-height: 600px;
   max-width: 600px;
   height: 100%;
@@ -29,7 +57,7 @@ button {
   border: #313a28 2px solid;
   padding: 20px;
   justify-content: center;
-  background-color: #829b6dff;
+  background-color: var(--color-background-btn);
   align-items: center;
   font-size: 200%;
   font-family: Copperplate, times, serif;
