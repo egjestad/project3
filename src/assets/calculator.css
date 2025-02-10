@@ -1,0 +1,68 @@
+#calculator {
+  grid-area: calculatorView;
+
+  height: 100%;
+}
+
+#calculatorContainer {
+  display: grid;
+  justify-content: center;
+  gap: 4px;
+  grid-template-areas:
+    'input input input op'
+    'nr nr nr op'
+    'nr nr nr op'
+    'nr nr nr op'
+    'nr nr nr op';
+
+  grid-template-columns: 100px 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px 100px 100px;
+  align-content: center;
+
+  max-height: 600px;
+  max-width: 600px;
+  height: 100%;
+}
+
+button {
+  display: flex;
+  border: #313a28 2px solid;
+  padding: 20px;
+  justify-content: center;
+  background-color: #829b6dff;
+  align-items: center;
+  font-size: 200%;
+  font-family: Copperplate, times, serif;
+}
+
+.number {
+  color: white;
+}
+
+#input {
+  grid-area: input;
+  border: #313a28 2px solid;
+  text-align: right;
+  font-size: 200%;
+  font-family: Copperplate, times, serif;
+  padding: 10px;
+  color: #313a28;
+}
+
+.option {
+  padding: 20px;
+  background-color: dimgray;
+  color: gainsboro;
+}
+
+#point {
+  padding: 5px;
+  font-size: 40px;
+}
+
+#output {
+  border: black 2px solid;
+  margin: 10px;
+  grid-area: output;
+  width: 400px;
+}
