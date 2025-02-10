@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router' // Import 'RouteRecordRaw' as a type
 import CalculatorView from '@/views/CalculatorView.vue'
 import HomeView from '@/views/HomeView.vue'
+import ContactView from '@/views/ContactView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,6 +14,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/Calculator',
     name: 'CalculatorView',
     component: CalculatorView,
+  },
+  {
+    path: '/Contact',
+    name: 'ContactView',
+    component: ContactView,
   },
 ]
 
