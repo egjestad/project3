@@ -1,13 +1,17 @@
-<script setup lang="ts">
-import CalculatorComponent from './components/CalculatorComponent.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <header>
-    <div class="wrapper">Calculator</div>
-  </header>
-
-  <CalculatorComponent />
+  <div class="menu">
+    <ul>
+      <li>
+        <router-link to="/">Home</router-link>
+      </li>
+      <li>
+        <router-link to="/calculator">Calculator</router-link>
+      </li>
+    </ul>
+  </div>
+  <router-view />
 </template>
 
 <style></style>
@@ -15,6 +19,15 @@ import CalculatorComponent from './components/CalculatorComponent.vue'
 <style scoped>
 header {
   line-height: 1.5;
+}
+
+.menu {
+  font-size: small;
+}
+
+.menu ul {
+  list-style-type: none;
+  padding: 0;
 }
 
 .logo {
