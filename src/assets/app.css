@@ -4,6 +4,9 @@ header {
   font-size: 50px;
   grid-area: header;
   color: var(--color-heading);
+  background-color: #d8e0d1;
+  width: 100%;
+  padding: 2% 0 0 0;
 }
 
 nav {
@@ -11,15 +14,18 @@ nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
+  background-color: #d8e0d1;
+
+  border-bottom: 10px solid var(--color-border);
 }
 
 nav a.router-link-exact-active {
   color: var(--color-text);
-  background-color: #6d9c6d;
+  background-color: #97ac86;
 }
 
 nav a:hover {
-  background-color: #6d9c79;
+  background-color: #71895d;
 
   color: var(--color-heading);
 }

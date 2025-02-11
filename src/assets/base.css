@@ -21,6 +21,9 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
   --vt-c-button-background: #829b6dff;
+  --vt-c-button-background-hover: #71895d;
+  --vt-c-button-background-active: #97ac86;
+  --vt-c-button-background-disabled: #97ac86;
 }
 
 /* semantic color variables for this project */
@@ -36,6 +39,9 @@
   --color-text: var(--vt-c-text-light-1);
 
   --color-background-btn: var(--vt-c-button-background);
+  --color-background-btn-hover: var(--vt-c-button-background-hover);
+  --color-background-btn-active: var(--vt-c-button-background-active);
+  --color-background-btn-disabled: var(--vt-c-button-background-disabled);
 }
 
 *,
