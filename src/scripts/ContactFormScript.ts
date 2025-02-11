@@ -1,7 +1,9 @@
 import { computed, ref } from 'vue'
+import { useUserStore } from '@/store/userStore'
 
 export default {
   setup() {
+    const store = useUserStore()
     const name = ref('')
     const email = ref('')
     const message = ref('')
@@ -11,8 +13,15 @@ export default {
     })
 
     function handleSubmit() {
+      if (!isFormValid.value) {
+        alert('Invalid form input!')
+        return
+      }
+
+      store.setName(name.value)
+      store.setEmail(email.value)
       alert('Form submitted!')
-    }
+    } 
 
     function ValidateNameInput() {
       return name.value.trim().length > 0
