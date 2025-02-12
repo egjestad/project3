@@ -2,17 +2,19 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: {
-      name: '',
-      email: '',
-    },
+    name: '',
+    email: '',
   }),
   actions: {
-    setName(name: string) {
-      this.user.name = name
+    updateName(name: string) {
+      this.name = name
     },
-    setEmail(email: string) {
-      this.user.email = email
+    updateEmail(email: string) {
+      this.email = email
+    },
+    resetContact() {
+      this.name = ''
+      this.email = ''
     },
   },
 })
