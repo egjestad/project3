@@ -64,14 +64,16 @@ export default defineComponent({
           statusMessage.value = 'Error: Something went wrong!'
         }
 
+        setTimeout(() => {
+          statusMessage.value = ''
+        }, 2500)
+
         contact.value = { name: '', email: '', message: '' }
         store.resetContact()
       } catch (error) {
         statusMessage.value = 'Error: Could not reach the backend!'
         console.error(error)
       }
-
-      alert('Form submitted!')
     }
 
     return { contact, handleSubmit, isFormValid, statusMessage }
