@@ -4,10 +4,7 @@ import CalculatorComponent from '@/components/CalculatorComponent.vue'
 
 <template>
   <header>
-    <div class="wrapper">
-      Calculator
-    </div>
-
+    <div class="wrapper">Calculator</div>
   </header>
 
   <CalculatorComponent />

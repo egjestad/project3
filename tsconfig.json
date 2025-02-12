@@ -9,6 +9,7 @@
     }
   ],
   "compilerOptions": {
+    "types": ["vuex"],
     "moduleResolution": "node", // Ensures node module resolution
     "esModuleInterop": true, // To allow default imports
     "strict": true,

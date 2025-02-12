@@ -3,6 +3,10 @@ header {
   justify-content: center;
   font-size: 50px;
   grid-area: header;
+  color: var(--color-heading);
+  background-color: #d8e0d1;
+  width: 100%;
+  padding: 2% 0 0 0;
 }
 
 nav {
@@ -10,17 +14,20 @@ nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
+  background-color: #d8e0d1;
+
+  border-bottom: 10px solid var(--color-border);
 }
 
 nav a.router-link-exact-active {
   color: var(--color-text);
-  background-color: rgb(105, 118, 94);
-  border: 2px solid var(--color-border);
+  background-color: #97ac86;
 }
 
 nav a:hover {
-  background-color: hsla(160, 100%, 37%, 0.2);
-  border: 2px solid var(--color-border);
+  background-color: #71895d;
+
+  color: var(--color-heading);
 }
 
 nav a {
@@ -30,16 +37,14 @@ nav a {
   background-color: var(--color-background-btn);
   color: var(--color-text);
   margin-inline: 5%;
-}
-
-nav a:first-of-type {
-  border: 2px solid var(--color-border);
+  width: 10%;
 }
 
 .content {
   grid-area: main;
   padding: 1rem;
   text-align: center;
+  color: var(--color-text);
 }
 
 @media (min-width: 1024px) {
