@@ -40,7 +40,7 @@ export default defineComponent({
 
     const ValidateEmailInput = () => {
       const emailRegex = /^[a-zA-Z0-9._-]+[@][a-zA-Z0-9]+\.[a-zA-Z]{2,}$/
-      return emailRegex.test(contact.value.email)
+      return emailRegex.test(contact.value.email.trim())
     }
     const ValidateMessageInput = () => {
       return contact.value.message.trim().length > 0
@@ -51,7 +51,7 @@ export default defineComponent({
         alert('Invalid form input!')
         return
       }
-      
+
       try {
         // Mock backend API call
         const response = await axios.post('http://localhost:5001/messages', {
