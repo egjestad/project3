@@ -34,7 +34,8 @@ export default defineComponent({
     })
 
     const ValidateNameInput = () => {
-      return contact.value.name.trim().length > 0
+      const nameRegex = /^[a-zA-Z\s]+$/
+      return contact.value.name.trim().length > 0 && nameRegex.test(contact.value.name)
     }
 
     const ValidateEmailInput = () => {
@@ -50,6 +51,7 @@ export default defineComponent({
         alert('Invalid form input!')
         return
       }
+      
       try {
         // Mock backend API call
         const response = await axios.post('http://localhost:5001/messages', {

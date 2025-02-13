@@ -9,7 +9,7 @@
     }
   ],
   "compilerOptions": {
-    "types": ["vuex"],
+    "types": ["vitest/globals"],
     "moduleResolution": "node", // Ensures node module resolution
     "esModuleInterop": true, // To allow default imports
     "strict": true,
