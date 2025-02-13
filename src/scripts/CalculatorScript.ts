@@ -60,7 +60,11 @@ export default defineComponent({
         displayValue.value = String(result)
         calculated.value = true
       } catch (error) {
-        alert(error)
+        if (error instanceof Error) {
+          displayValue.value = error.message
+        } else {
+          displayValue.value = 'Error'
+        }
       }
     }
 
