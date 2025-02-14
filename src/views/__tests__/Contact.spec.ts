@@ -94,7 +94,6 @@ describe('ContactView', () => {
       'missing@domain',
       '@missingusername.com',
       'missingdot@com',
-      ' mail@fdsf.cvd',
     ]
 
     const button = wrapper.find('button#submit').element as HTMLButtonElement

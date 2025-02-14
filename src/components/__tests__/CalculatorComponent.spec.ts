@@ -59,4 +59,46 @@ describe('CalculatorView', () => {
     wrapper.vm.calculate()
     expect(wrapper.vm.displayValue).toBe('2')
   })
+  it('should handle floating point numbers', async () => {
+    const wrapper = mount(CalculatorComponent)
+    wrapper.vm.displayValue = '1/3'
+    wrapper.vm.calculate()
+    expect(wrapper.vm.displayValue).toBe('0.333333333')
+  })
+  it('should handle floating point numbers with trailing zeros', async () => {
+    const wrapper = mount(CalculatorComponent)
+    wrapper.vm.displayValue = '1/2'
+    wrapper.vm.calculate()
+    expect(wrapper.vm.displayValue).toBe('0.5')
+  })
+  it('should handle plus operators', async () => {
+    const wrapper = mount(CalculatorComponent)
+    wrapper.vm.displayValue = '1+1'
+    wrapper.vm.calculate()
+    expect(wrapper.vm.displayValue).toBe('2')
+  })
+  it('should handle minus operators', async () => {
+    const wrapper = mount(CalculatorComponent)
+    wrapper.vm.displayValue = '1-1'
+    wrapper.vm.calculate()
+    expect(wrapper.vm.displayValue).toBe('0')
+  })
+  it('should handle multiplication operators', async () => {
+    const wrapper = mount(CalculatorComponent)
+    wrapper.vm.displayValue = '2*2'
+    wrapper.vm.calculate()
+    expect(wrapper.vm.displayValue).toBe('4')
+  })
+  it('should handle division operators', async () => {
+    const wrapper = mount(CalculatorComponent)
+    wrapper.vm.displayValue = '4/2'
+    wrapper.vm.calculate()
+    expect(wrapper.vm.displayValue).toBe('2')
+  })
+  it('should handle multiple operators', async () => {
+    const wrapper = mount(CalculatorComponent)
+    wrapper.vm.displayValue = '1+2*3'
+    wrapper.vm.calculate()
+    expect(wrapper.vm.displayValue).toBe('7')
+  })
 })
