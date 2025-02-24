@@ -44,21 +44,28 @@ export default defineComponent({
       calculated.value = false
     }
 
-    const calculate = (): void => {
+    const calculate = async (): Promise<void> => {
       try {
-        let result: number = eval(displayValue.value.replace(/(^|[^0-9])0+(\d+)/g, '$1$2'))
-
-        if (isNaN(result) || !isFinite(result)) {
-          throw new Error('Invalid input')
+        const response = await fetch('http://localhost:8080/calc', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ expression: displayValue.value }),
+        })
+        if (response.ok) {
+          const answer = await response.json()
+          let result = answer.result
+          if (result % 1 !== 0) {
+            result = parseFloat(result.toFixed(9).replace(/\.?0+$/, ''))
+          }
+          log.value.push(`${displayValue.value} = ${result}`)
+          displayValue.value = String(result)
+          calculated.value = true
+        } else {
+          const error = await response.json()
+          throw new Error(error.message)
         }
-
-        if (result % 1 !== 0) {
-          result = parseFloat(result.toFixed(9).replace(/\.?0+$/, ''))
-        }
-
-        log.value.push(`${displayValue.value} = ${result}`)
-        displayValue.value = String(result)
-        calculated.value = true
       } catch (error) {
         if (error instanceof Error) {
           displayValue.value = error.message
