@@ -29,7 +29,10 @@ export default defineComponent({
     }
 
     const handleOperatorClick = (operator: string): void => {
-      if (displayValue.value === '') {
+      if (displayValue.value === '' || displayValue.value === '-') {
+        if (operator === '-') {
+          displayValue.value += operator
+        }
         return
       }
       if (/[/+*-]$/.test(displayValue.value)) {
@@ -56,9 +59,15 @@ export default defineComponent({
         if (response.ok) {
           const answer = await response.json()
           let result = answer.result
+
+          if (isNaN(result) || !isFinite(result)) {
+            throw new Error('Invalid input')
+          }
+
           if (result % 1 !== 0) {
             result = parseFloat(result.toFixed(9).replace(/\.?0+$/, ''))
           }
+
           log.value.push(`${displayValue.value} = ${result}`)
           displayValue.value = String(result)
           calculated.value = true
