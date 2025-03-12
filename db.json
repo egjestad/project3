@@ -1,34 +1,64 @@
 {
   "messages": [
     {
-      "id": "b6fc",
-      "name": "cd",
-      "email": "cd@cdcdz.dc",
-      "message": "cd"
+      "id": "a07b",
+      "name": "Test Name",
+      "email": "test@mail.no",
+      "message": "Test message "
     },
     {
-      "id": "9963",
-      "name": "fd",
-      "email": "egjestad@gmail.com",
-      "message": "fds"
+      "id": "5572",
+      "name": "Test Name",
+      "email": "test@mail.no",
+      "message": "Test message "
     },
     {
-      "id": "32a5",
-      "name": "fd",
-      "email": "egjestad@gmail.com",
-      "message": "fds"
+      "id": "180e",
+      "name": "Test Name",
+      "email": "test@mail.no",
+      "message": "fesfe"
     },
     {
-      "id": "8cda",
-      "name": "Elise Christine Gjestad",
-      "email": "egjestad@gmail.com",
-      "message": "efsfvevf"
+      "id": "9d14",
+      "name": "Test Name",
+      "email": "test@mail.no",
+      "message": "fesfe"
     },
     {
-      "id": "e5ed",
-      "name": "Elise Christine Gjestad",
-      "email": "egjestad@gmail.com",
-      "message": "efsfvevf"
+      "id": "5f52",
+      "name": "Test Name",
+      "email": "egjestad@outlook.com",
+      "message": "test test"
+    },
+    {
+      "id": "8e78",
+      "name": "Test Name",
+      "email": "egjestad@outlook.com",
+      "message": "test test"
+    },
+    {
+      "id": "a443",
+      "name": "Test Name",
+      "email": "test@email.no",
+      "message": "test test test"
+    },
+    {
+      "id": "c5ca",
+      "name": "Test Name",
+      "email": "test@email.no",
+      "message": "test test test"
+    },
+    {
+      "id": "ffff",
+      "name": "Test Name",
+      "email": "egjestad@outlook.com",
+      "message": "test"
+    },
+    {
+      "id": "84a1",
+      "name": "Test Name",
+      "email": "egjestad@outlook.com",
+      "message": "test"
     }
   ]
 }

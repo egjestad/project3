@@ -5,11 +5,11 @@
   <form class="content" id="formContainer" @submit.prevent="handleSubmit()">
     <div class="form" id="name">
       <label for="name" id="nameLabel" required>Name:</label>
-      <input type="nameinput" id="name" v-model="contact.name" />
+      <input type="nameinput" id="nameInput" v-model="contact.name" />
     </div>
     <div class="form" id="email">
       <label for="email" id="emailLabel">Email:</label>
-      <input type="emailInput" id="email" v-model="contact.email" />
+      <input type="emailInput" id="emailInput" v-model="contact.email" />
     </div>
     <div class="form" id="message">
       <label for="message" id="messageLabel">Message:</label>

@@ -29,7 +29,10 @@ export default defineComponent({
     }
 
     const handleOperatorClick = (operator: string): void => {
-      if (displayValue.value === '') {
+      if (displayValue.value === '' || displayValue.value === '-') {
+        if (operator === '-') {
+          displayValue.value += operator
+        }
         return
       }
       if (/[/+*-]$/.test(displayValue.value)) {
@@ -44,23 +47,40 @@ export default defineComponent({
       calculated.value = false
     }
 
-    const calculate = (): void => {
+    const calculate = async (): Promise<void> => {
       try {
-        let result: number = eval(displayValue.value.replace(/(^|[^0-9])0+(\d+)/g, '$1$2'))
+        const response = await fetch('http://localhost:8080/calc', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ expression: displayValue.value }),
+        })
+        if (response.ok) {
+          const answer = await response.json()
+          let result = answer.result
 
-        if (isNaN(result) || !isFinite(result)) {
-          throw new Error('Invalid input')
+          if (isNaN(result) || !isFinite(result)) {
+            throw new Error('Invalid input')
+          }
+
+          if (result % 1 !== 0) {
+            result = parseFloat(result.toFixed(9).replace(/\.?0+$/, ''))
+          }
+
+          log.value.push(`${displayValue.value} = ${result}`)
+          displayValue.value = String(result)
+          calculated.value = true
+        } else {
+          const error = await response.json()
+          throw new Error(error.message)
         }
-
-        if (result % 1 !== 0) {
-          result = parseFloat(result.toFixed(9).replace(/\.?0+$/, ''))
-        }
-
-        log.value.push(`${displayValue.value} = ${result}`)
-        displayValue.value = String(result)
-        calculated.value = true
       } catch (error) {
-        alert(error)
+        if (error instanceof Error) {
+          displayValue.value = error.message
+        } else {
+          displayValue.value = 'Error'
+        }
       }
     }
 

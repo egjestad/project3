@@ -34,12 +34,13 @@ export default defineComponent({
     })
 
     const ValidateNameInput = () => {
-      return contact.value.name.trim().length > 0
+      const nameRegex = /^[a-zA-Z\s]+$/
+      return contact.value.name.trim().length > 0 && nameRegex.test(contact.value.name)
     }
 
     const ValidateEmailInput = () => {
       const emailRegex = /^[a-zA-Z0-9._-]+[@][a-zA-Z0-9]+\.[a-zA-Z]{2,}$/
-      return emailRegex.test(contact.value.email)
+      return emailRegex.test(contact.value.email.trim())
     }
     const ValidateMessageInput = () => {
       return contact.value.message.trim().length > 0
@@ -50,6 +51,7 @@ export default defineComponent({
         alert('Invalid form input!')
         return
       }
+
       try {
         // Mock backend API call
         const response = await axios.post('http://localhost:5001/messages', {
@@ -64,14 +66,16 @@ export default defineComponent({
           statusMessage.value = 'Error: Something went wrong!'
         }
 
+        setTimeout(() => {
+          statusMessage.value = ''
+        }, 2500)
+
         contact.value = { name: '', email: '', message: '' }
         store.resetContact()
       } catch (error) {
         statusMessage.value = 'Error: Could not reach the backend!'
         console.error(error)
       }
-
-      alert('Form submitted!')
     }
 
     return { contact, handleSubmit, isFormValid, statusMessage }
