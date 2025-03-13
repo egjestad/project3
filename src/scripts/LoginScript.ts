@@ -1,25 +1,32 @@
-import LoginComponent from '@/components/LoginComponent.vue'
 import router from '@/router'
 import { useLoginUserStore } from '@/store/loginUserStore'
-import { ref } from 'vue'
+import api from './api'
 
-export default {
-  name: 'LoginScript',
-  component: { LoginComponent },
-  setup() {
-    const username = ref('')
-    const password = ref('')
+export async function handleLoginClick(username: string, password: string) {
+  const userStore = useLoginUserStore()
 
-    const userStore = useLoginUserStore()
-
-    function handleLoginClick() {
-      if (username.value.length > 1 && password.value.length > 7) {
-        userStore.login(username.value)
-        router.push('/Home')
-      } else {
-        alert('Invalid username or password')
-      }
+  if (username.length > 1 && password.length > 7) {
+    const userData = await loginUser(username, password)
+    if (userData) {
+      userStore.login(userData.username, userData.userId)
+      router.push('/Home')
+    } else {
+      alert('Invalid username or password')
     }
-    return { username, password, handleLoginClick, LoginComponent }
-  },
+  } else {
+    alert(
+      'Username must be at least 2 characters long and password must be at least 8 characters long',
+    )
+  }
+}
+
+export async function loginUser(username: string, password: string) {
+  try {
+    const response = await api.post('/login', { username, password })
+    if (response.status === 200) {
+      return response.data
+    }
+  } catch (error) {
+    console.error(error)
+  }
 }

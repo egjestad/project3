@@ -1,16 +1,22 @@
 <template>
   <div id="username">
     <label for="usernameInput" id="usernameLabel">Username</label>
-    <textarea id="usernameInput"></textarea>
+    <textarea id="usernameInput" v-model="username"></textarea>
   </div>
   <div id="password">
     <label for="passwordInput" id="passwordLabel">Password</label>
-    <textarea id="passwordInput"></textarea>
+    <textarea id="passwordInput" v-model="password"></textarea>
   </div>
   <div id="loginstatus">
-    <button id="loginButton">Login</button>
+    <button id="loginButton" @click="handleLoginClick(username, password)">Login</button>
     <label id="loginstatusLabel">fe</label>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { handleLoginClick } from '@/scripts/LoginScript'
+
+const username = ref('')
+const password = ref('')
+</script>
