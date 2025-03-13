@@ -1,5 +1,6 @@
 import { defineComponent, ref, provide } from 'vue'
 import LogComponent from '@/components/LogComponent.vue'
+import { useLoginUserStore } from '@/store/loginUserStore'
 
 export default defineComponent({
   name: 'CalculatorView',
@@ -54,7 +55,10 @@ export default defineComponent({
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ expression: displayValue.value }),
+          body: JSON.stringify({
+            expression: displayValue.value,
+            userId: useLoginUserStore().userId,
+          }),
         })
         if (response.ok) {
           const answer = await response.json()
