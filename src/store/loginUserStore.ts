@@ -5,10 +5,12 @@ export const useLoginUserStore = defineStore('loginUser', {
     username: '',
     userId: '',
     loginStatus: false,
+    calculations: [] as Array<{ expression: string; result: number }>,
   }),
   getters: {
     loggedInUsername: (state) => state.username,
     loggedInUserId: (state) => state.userId,
+    resentCalculations: (state) => state.calculations,
   },
   actions: {
     async login(username: string, userId: string) {
@@ -23,16 +25,21 @@ export const useLoginUserStore = defineStore('loginUser', {
       this.loginStatus = false
     },
 
-    async isLoggedIn() {
-      return this.username !== ''
-    },
-
     async getUserId() {
       return this.userId
     },
 
     async getUsername() {
       return this.username
+    },
+
+    async saveCalculation(expression: string, result: number) {
+      const calculation = { expression, result }
+      this.calculations.unshift(calculation)
+      if (this.calculations.length > 10) {
+        this.calculations.pop()
+      }
+      localStorage.setItem('calculations', JSON.stringify(this.calculations))
     },
 
     async loadUserFromStorage() {
@@ -42,6 +49,14 @@ export const useLoginUserStore = defineStore('loginUser', {
         this.loginStatus = true
         this.username = username
         this.userId = userId
+        await this.loadCalculationsFromStorage()
+      }
+    },
+
+    async loadCalculationsFromStorage() {
+      const calculationsData = localStorage.getItem('calculations')
+      if (calculationsData) {
+        this.calculations = JSON.parse(calculationsData)
       }
     },
   },
