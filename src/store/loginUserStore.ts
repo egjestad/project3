@@ -18,11 +18,14 @@ export const useLoginUserStore = defineStore('loginUser', {
       this.userId = userId
       this.loginStatus = true
       localStorage.setItem('user', JSON.stringify({ username, userId }))
+      await this.fetchRecentCalculationsFromBackend()
     },
     async logout() {
       this.username = ''
       this.userId = ''
       this.loginStatus = false
+      localStorage.removeItem('user')
+      localStorage.removeItem('calculations')
     },
 
     async getUserId() {
@@ -49,14 +52,25 @@ export const useLoginUserStore = defineStore('loginUser', {
         this.loginStatus = true
         this.username = username
         this.userId = userId
-        await this.loadCalculationsFromStorage()
+        await this.fetchRecentCalculationsFromBackend()
       }
-    },
 
-    async loadCalculationsFromStorage() {
       const calculationsData = localStorage.getItem('calculations')
       if (calculationsData) {
         this.calculations = JSON.parse(calculationsData)
+      }
+    },
+
+    async fetchRecentCalculationsFromBackend() {
+      if (!this.userId) return
+      try {
+        const response = await fetch(`http://localhost:8080/${this.userId}/recent`)
+        if (!response.ok) throw new Error('Failed to fetch calculations')
+        const data = await response.json()
+        this.calculations = data
+        localStorage.setItem('calculations', JSON.stringify(this.calculations))
+      } catch (error) {
+        console.error('Error fetching recent calculations:', error)
       }
     },
   },

@@ -31,7 +31,7 @@
     </div>
 
     <div id="log">
-      <LogComponent :log="log" />
+      <LogComponent />
     </div>
   </div>
 </template>

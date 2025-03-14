@@ -1,4 +1,4 @@
-import { defineComponent, ref, provide } from 'vue'
+import { defineComponent, ref, provide, computed, watchEffect } from 'vue'
 import LogComponent from '@/components/LogComponent.vue'
 import { useLoginUserStore } from '@/store/loginUserStore'
 
@@ -6,11 +6,19 @@ export default defineComponent({
   name: 'CalculatorView',
   components: { LogComponent },
   setup() {
+    const userStore = useLoginUserStore()
     const displayValue = ref<string>('')
     const calculated = ref<boolean>(false)
-    const log = ref<string[]>([])
+    const log = computed(() => userStore.calculations)
 
     provide('log', log)
+
+    // Hent utregninger når brukeren logger inn
+    watchEffect(() => {
+      if (userStore.loginStatus) {
+        userStore.fetchRecentCalculationsFromBackend()
+      }
+    })
 
     const handleClick = (value: string): void => {
       if (value === '=') {
@@ -57,7 +65,7 @@ export default defineComponent({
           },
           body: JSON.stringify({
             expression: displayValue.value,
-            userId: useLoginUserStore().userId,
+            userId: userStore.userId,
           }),
         })
         if (response.ok) {
@@ -72,7 +80,8 @@ export default defineComponent({
             result = parseFloat(result.toFixed(9).replace(/\.?0+$/, ''))
           }
 
-          log.value.push(`${displayValue.value} = ${result}`)
+          userStore.saveCalculation(displayValue.value, result)
+          
           displayValue.value = String(result)
           calculated.value = true
         } else {
