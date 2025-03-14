@@ -7,13 +7,17 @@
   font-weight: normal;
   display: grid;
   grid-template-areas:
+    'login login'
     'header header'
     'nav nav'
     'main main ';
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 0;
   background-color: var(--color-background);
 }
+
+
 
 a,
 .green,

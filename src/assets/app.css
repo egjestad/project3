@@ -6,7 +6,6 @@ header {
   color: var(--color-heading);
   background-color: #d8e0d1;
   width: 100%;
-  padding: 2% 0 0 0;
 }
 
 nav {
@@ -15,7 +14,6 @@ nav {
   font-size: 12px;
   text-align: center;
   background-color: #d8e0d1;
-
   border-bottom: 10px solid var(--color-border);
 }
 
