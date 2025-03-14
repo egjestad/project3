@@ -2,6 +2,15 @@ import router from '@/router'
 import { useLoginUserStore } from '@/store/loginUserStore'
 import api from './api'
 
+export function loginStatus() {
+  const userStore = useLoginUserStore()
+  if (!userStore.loginStatus) {
+    return 'Not logged in'
+  } else {
+    return 'Logged in as ' + userStore.loggedInUsername
+  }
+}
+
 export async function handleLoginClick(username: string, password: string) {
   const userStore = useLoginUserStore()
 

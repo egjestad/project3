@@ -4,6 +4,7 @@ export const useLoginUserStore = defineStore('loginUser', {
   state: () => ({
     username: '',
     userId: '',
+    loginStatus: false,
   }),
   getters: {
     loggedInUsername: (state) => state.username,
@@ -13,10 +14,13 @@ export const useLoginUserStore = defineStore('loginUser', {
     async login(username: string, userId: string) {
       this.username = username
       this.userId = userId
+      this.loginStatus = true
+      localStorage.setItem('user', JSON.stringify({ username, userId }))
     },
     async logout() {
       this.username = ''
       this.userId = ''
+      this.loginStatus = false
     },
 
     async isLoggedIn() {
@@ -32,9 +36,10 @@ export const useLoginUserStore = defineStore('loginUser', {
     },
 
     async loadUserFromStorage() {
-      const username = localStorage.getItem('username')
-      const userId = localStorage.getItem('userId')
-      if (username && userId) {
+      const userData = localStorage.getItem('user')
+      if (userData) {
+        const { username, userId } = JSON.parse(userData)
+        this.loginStatus = true
         this.username = username
         this.userId = userId
       }

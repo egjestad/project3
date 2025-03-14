@@ -9,7 +9,6 @@
   </div>
   <div id="loginstatus">
     <button id="loginButton" @click="handleLoginClick(username, password)">Login</button>
-    <label id="loginstatusLabel">fe</label>
   </div>
 </template>
 
