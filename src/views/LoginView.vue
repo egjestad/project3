@@ -23,10 +23,29 @@ import LoginComponent from '@/components/LoginComponent.vue'
   flex-direction: column;
   align-items: center;
   column-gap: 20px;
+  margin: 10px;
 }
 #usernameLabel,
 #passwordLabel {
   width: 100px;
+}
+
+#usernameInput:focus,
+#passwordInput:focus {
+  border: 2px solid #3f4c34;
+  outline: none;
+}
+
+#usernameInput,
+#passwordInput {
+  height: 30px;
+  font-size: 15px;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 10px;
+  border: 2px solid var(--color-border);
+  color: var(--color-text);
+  width: 100%;
+  resize: none;
 }
 #loginstatusLabel {
   color: rgb(189, 0, 0);

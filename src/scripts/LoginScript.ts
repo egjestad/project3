@@ -14,6 +14,11 @@ export function loginStatus() {
 export async function handleLoginClick(username: string, password: string) {
   const userStore = useLoginUserStore()
 
+  if (userStore.loginStatus) {
+    alert('You are already logged in')
+    return
+  }
+
   if (username.length > 1 && password.length > 7) {
     const userData = await loginUser(username, password)
     if (userData) {
