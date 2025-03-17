@@ -7,7 +7,7 @@ export function loginStatus() {
   if (!userStore.loginStatus) {
     return 'Not logged in'
   } else {
-    return 'Logged in as ' + userStore.loggedInUsername
+    return 'Logged in as ' + userStore.username
   }
 }
 
@@ -23,6 +23,9 @@ export async function handleLoginClick(username: string, password: string) {
     userStore.getTokenAndSaveInStore(username, password).then(() => {
       if (userStore.jwtToken) {
         alert('Login successful')
+        sessionStorage.setItem('jwt_token', userStore.jwtToken)
+        sessionStorage.setItem('username', userStore.username)
+        sessionStorage.setItem('userId', userStore.userId)
         router.push('/Home')
       } else {
         alert('Error logging in')
@@ -89,7 +92,7 @@ export async function loginUser(username: string, password: string) {
 
 export async function fetchRecentCalculations() {
   const userStore = useLoginUserStore()
-  const userId = userStore.loggedInUserId
+  const userId = userStore.userId
   const jwtToken = localStorage.getItem('jwt_token')
 
   if (!userId || !jwtToken) {

@@ -1,5 +1,12 @@
 import axios from 'axios'
 import type { User } from '@/models/interfaces'
+import { ref } from 'vue'
+
+export const loggedIn = ref(false)
+
+if (sessionStorage.getItem('jwt_token')) {
+  loggedIn.value = true
+}
 
 export async function getJwtToken(username: string, password: string): Promise<string | null> {
   try {

@@ -3,23 +3,19 @@ import { getJwtToken } from '@/utils/authService'
 
 export const useLoginUserStore = defineStore('loginUser', {
   state: () => ({
-    username: '',
-    userId: '',
-    jwtToken: '',
+    username: sessionStorage.getItem('username') || '',
+    userId: sessionStorage.getItem('userId') || '',
+    jwtToken: localStorage.getItem('jwt_token') || '',
     loginStatus: false,
     calculations: [] as Array<{ expression: string; result: number }>,
   }),
-  getters: {
-    loggedInUsername: (state) => state.username,
-    loggedInUserId: (state) => state.userId,
-    resentCalculations: (state) => state.calculations,
-  },
   actions: {
     async login(username: string, userId: string) {
       this.username = username
       this.userId = userId
       this.loginStatus = true
-      localStorage.setItem('user', JSON.stringify({ username, userId }))
+      sessionStorage.setItem('username', username)
+      sessionStorage.setItem('userId', userId.toString())
       await this.fetchRecentCalculationsFromBackend()
     },
 
@@ -31,7 +27,8 @@ export const useLoginUserStore = defineStore('loginUser', {
             this.jwtToken = token
             this.username = username
             this.loginStatus = true
-            localStorage.setItem('jwt_token', token)
+            sessionStorage.setItem('username', username)
+            sessionStorage.setItem('jwt_token', token)
           } else {
             console.error('Failed to get token')
           }
@@ -45,16 +42,22 @@ export const useLoginUserStore = defineStore('loginUser', {
       this.username = ''
       this.userId = ''
       this.loginStatus = false
-      localStorage.removeItem('user')
-      localStorage.removeItem('calculations')
+      this.jwtToken = ''
+      sessionStorage.removeItem('username')
+      sessionStorage.removeItem('userId')
+      sessionStorage.removeItem('jwt_token')
+      this.calculations = []
     },
 
-    async getUserId() {
-      return this.userId
-    },
-
-    async getUsername() {
-      return this.username
+    async loadUserFromSession() {
+      const token = sessionStorage.getItem('jwt_token')
+      if (token) {
+        this.loginStatus = true
+        this.jwtToken = token
+        this.username = sessionStorage.getItem('username') || ''
+        this.userId = sessionStorage.getItem('userId') || ''
+        await this.fetchRecentCalculationsFromBackend()
+      }
     },
 
     async saveCalculation(expression: string, result: number) {

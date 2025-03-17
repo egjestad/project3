@@ -3,3 +3,8 @@ export interface User {
   userId: string
   token: string
 }
+
+export interface Calculation {
+  expression: string
+  result: number
+}
