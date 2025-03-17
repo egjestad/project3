@@ -1,6 +1,7 @@
 import { defineComponent, ref, provide, computed, watchEffect } from 'vue'
 import LogComponent from '@/components/LogComponent.vue'
 import { useLoginUserStore } from '@/store/loginUserStore'
+import { apiClient } from '@/utils/authService'
 
 export default defineComponent({
   name: 'CalculatorView',
@@ -58,19 +59,12 @@ export default defineComponent({
 
     const calculate = async (): Promise<void> => {
       try {
-        const response = await fetch('http://localhost:8080/calc', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            expression: displayValue.value,
-            userId: userStore.userId,
-          }),
+        const response = await apiClient.post('/calc', {
+          expression: displayValue.value,
         })
-        if (response.ok) {
-          const answer = await response.json()
-          let result = answer.result
+
+        if (response.status === 200) {
+          let result = await response.data.result
 
           if (isNaN(result) || !isFinite(result)) {
             throw new Error('Invalid input')
@@ -81,11 +75,17 @@ export default defineComponent({
           }
 
           userStore.saveCalculation(displayValue.value, result)
-          
+
           displayValue.value = String(result)
           calculated.value = true
+        } else if (response.status === 401) {
+          throw new Error('Unauthorized')
+        } else if (response.status === 400) {
+          throw new Error('Invalid input')
+        } else if (response.status === 403) {
+          throw new Error('Forbidden')
         } else {
-          const error = await response.json()
+          const error = await response.data.error
           throw new Error(error.message)
         }
       } catch (error) {
