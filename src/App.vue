@@ -2,6 +2,7 @@
 import { useLoginUserStore } from '@/store/loginUserStore'
 
 const loginUserStores = useLoginUserStore()
+
 </script>
 
 <template>
@@ -10,6 +11,7 @@ const loginUserStores = useLoginUserStore()
       <a v-if="loginUserStores.loginStatus" href="#"
         >Logged in as: {{ loginUserStores.username }}</a
       >
+      <a v-else href="#">Not logged in</a>
     </div>
     <div id="loginStatus">
       <router-link
