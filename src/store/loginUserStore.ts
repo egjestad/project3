@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
+import { getJwtToken } from '@/utils/authService'
 
 export const useLoginUserStore = defineStore('loginUser', {
   state: () => ({
     username: '',
     userId: '',
+    jwtToken: '',
     loginStatus: false,
     calculations: [] as Array<{ expression: string; result: number }>,
   }),
@@ -20,6 +22,25 @@ export const useLoginUserStore = defineStore('loginUser', {
       localStorage.setItem('user', JSON.stringify({ username, userId }))
       await this.fetchRecentCalculationsFromBackend()
     },
+
+    async getTokenAndSaveInStore(username: string, password: string) {
+      try {
+        await getJwtToken(username, password).then((token) => {
+          if (token) {
+            console.log('Token:', token)
+            this.jwtToken = token
+            this.username = username
+            this.loginStatus = true
+            localStorage.setItem('jwt_token', token)
+          } else {
+            console.error('Failed to get token')
+          }
+        })
+      } catch (error) {
+        console.error('Error getting token:', error)
+      }
+    },
+
     async logout() {
       this.username = ''
       this.userId = ''
@@ -47,7 +68,9 @@ export const useLoginUserStore = defineStore('loginUser', {
 
     async loadUserFromStorage() {
       const userData = localStorage.getItem('user')
-      if (userData) {
+      const token = localStorage.getItem('jwt_token')
+
+      if (userData && token) {
         const { username, userId } = JSON.parse(userData)
         this.loginStatus = true
         this.username = username
