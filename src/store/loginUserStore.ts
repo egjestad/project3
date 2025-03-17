@@ -10,12 +10,10 @@ export const useLoginUserStore = defineStore('loginUser', {
     calculations: [] as Array<{ expression: string; result: number }>,
   }),
   actions: {
-    async login(username: string, userId: string) {
+    async login(username: string) {
       this.username = username
-      this.userId = userId
       this.loginStatus = true
       sessionStorage.setItem('username', username)
-      sessionStorage.setItem('userId', userId.toString())
       await this.fetchRecentCalculationsFromBackend()
     },
 
@@ -40,7 +38,6 @@ export const useLoginUserStore = defineStore('loginUser', {
 
     async logout() {
       this.username = ''
-      this.userId = ''
       this.loginStatus = false
       this.jwtToken = ''
       sessionStorage.removeItem('username')
@@ -55,7 +52,6 @@ export const useLoginUserStore = defineStore('loginUser', {
         this.loginStatus = true
         this.jwtToken = token
         this.username = sessionStorage.getItem('username') || ''
-        this.userId = sessionStorage.getItem('userId') || ''
         await this.fetchRecentCalculationsFromBackend()
       }
     },

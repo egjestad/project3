@@ -7,17 +7,15 @@ export const useCalculationStore = defineStore('calculation', () => {
   const calculations = ref<Calculation[]>([])
 
   function addCalculation(calculation: Calculation) {
+    calculations.value.unshift(calculation)
     if (calculations.value.length >= 10) {
-      calculations.value.shift()
+      calculations.value.pop()
     }
-    calculations.value.push(calculation)
+    saveToSessionStorage()
   }
 
   function getResult() {
-    if (calculations.value.length === 0) {
-      return 0
-    }
-    return calculations.value[calculations.value.length - 1].result
+    return calculations.value.length === 0 ? 0 : calculations.value[0].result
   }
 
   function getCalculations() {
@@ -26,10 +24,12 @@ export const useCalculationStore = defineStore('calculation', () => {
 
   function setCalculations(newCalculations: Calculation[]) {
     calculations.value = newCalculations
+    saveToSessionStorage()
   }
 
   function clearCalculations() {
     calculations.value = []
+    sessionStorage.removeItem('calculations')
   }
 
   function saveToSessionStorage() {
@@ -48,11 +48,8 @@ export const useCalculationStore = defineStore('calculation', () => {
     try {
       const response = await apiClient.get('/recent')
       if (response.status === 200) {
-        response.data.forEach((calculation: Calculation) => {
-          addCalculation(calculation)
-        })
+        setCalculations(response.data)
       }
-      saveToSessionStorage()
     } catch (error) {
       console.error('Error fetching recent calculations:', error)
     }

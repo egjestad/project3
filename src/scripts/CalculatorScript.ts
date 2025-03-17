@@ -2,6 +2,7 @@ import { defineComponent, ref, provide, computed, watchEffect } from 'vue'
 import LogComponent from '@/components/LogComponent.vue'
 import { useLoginUserStore } from '@/store/loginUserStore'
 import { apiClient } from '@/utils/authService'
+import { useCalculationStore } from '@/store/calculationStore'
 
 export default defineComponent({
   name: 'CalculatorView',
@@ -74,7 +75,10 @@ export default defineComponent({
             result = parseFloat(result.toFixed(9).replace(/\.?0+$/, ''))
           }
 
-          userStore.saveCalculation(displayValue.value, result)
+          //userStore.saveCalculation(displayValue.value, result)
+          const calculationStore = useCalculationStore()
+          const expression = displayValue.value
+          calculationStore.addCalculation({ expression, result })
 
           displayValue.value = String(result)
           calculated.value = true

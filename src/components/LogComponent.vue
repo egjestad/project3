@@ -4,7 +4,7 @@
       <label>Log</label>
     </div>
     <div class="calculationLog">
-      <div class="calculation" v-for="calc in log" :key="calc.expression">
+      <div class="calculation" v-for="(calc, index) in calculations" :key="index">
         {{ calc.expression }} = {{ calc.result }}
       </div>
     </div>
@@ -12,10 +12,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useLoginUserStore } from '@/store/loginUserStore'
+import { useCalculationStore } from '@/store/calculationStore'
+import { computed, onMounted } from 'vue'
 
-const loginUserStores = useLoginUserStore()
+const calculationStores = useCalculationStore()
 
-const log = computed(() => loginUserStores.calculations)
+const calculations = computed(() => calculationStores.calculations)
+
+onMounted(() => {
+  calculationStores.getCalculations()
+})
 </script>

@@ -1,6 +1,6 @@
 import router from '@/router'
 import { useLoginUserStore } from '@/store/loginUserStore'
-import axios from 'axios'
+import { useCalculationStore } from '@/store/calculationStore'
 
 export function loginStatus() {
   const userStore = useLoginUserStore()
@@ -25,7 +25,11 @@ export async function handleLoginClick(username: string, password: string) {
         alert('Login successful')
         sessionStorage.setItem('jwt_token', userStore.jwtToken)
         sessionStorage.setItem('username', userStore.username)
-        sessionStorage.setItem('userId', userStore.userId)
+
+        // Fetch recent calculations for the user
+        const calculationStore = useCalculationStore()
+        calculationStore.fetchCalculationsFromBackend()
+
         router.push('/Home')
       } else {
         alert('Error logging in')
@@ -67,28 +71,6 @@ export async function handleLoginClick(username: string, password: string) {
   }
 }
   */
-
-export async function loginUser(username: string, password: string) {
-  console.log('Attempting login for:', username)
-  try {
-    const response = await axios.post('http://localhost:8080/login', {
-      username: username,
-      password: password,
-    })
-
-    console.log('Login response:', response)
-
-    if (response.status === 200) {
-      localStorage.setItem('jwt_token', response.data.token)
-      console.log('Login successful, token:', response.data.token)
-      alert('login successful, token: ' + response.data.token)
-      return response.data
-    }
-  } catch (error) {
-    console.error(error)
-    alert('Error logging in, please check your username and password')
-  }
-}
 
 export async function fetchRecentCalculations() {
   const userStore = useLoginUserStore()
