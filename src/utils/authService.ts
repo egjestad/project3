@@ -8,6 +8,26 @@ if (sessionStorage.getItem('jwt_token')) {
   loggedIn.value = true
 }
 
+export const apiClient = axios.create({
+  baseURL: 'http://localhost:8080',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+//add autorization header to all requests
+apiClient.interceptors.request.use(
+  async (config) => {
+    const token = sessionStorage.getItem('jwt_token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    console.log(' config:', config)
+    return config
+  },
+  (error) => Promise.reject(error),
+)
+
 export async function getJwtToken(username: string, password: string): Promise<string | null> {
   try {
     const response = await axios.post('http://localhost:8080/login', {
