@@ -42,35 +42,12 @@ export async function handleLoginClick(username: string, password: string) {
   }
 }
 
-/*
-    const userData = await loginUser(username, password)
-    alert('userData: ' + userData)
-
-    if (userData.token) {
-      localStorage.setItem('jwt_token', userData.token)
-
-      userStore.login(userData.username, userData.userId)
-      alert('login successful')
-
-      // Fetch recent calculations for the user
-      const userCalculations = await fetchRecentCalculations()
-      if (userCalculations) {
-        userCalculations.forEach((calculation: { expression: string; result: number }) => {
-          userStore.saveCalculation(calculation.expression, calculation.result)
-        })
-      }
-
-      router.push('/Home')
-    } else {
-      alert(userData.error || 'Error logging in')
-    }
-  } else {
-    alert(
-      'Username must be at least 2 characters long and password must be at least 8 characters long',
-    )
-  }
+export async function handleLogoutClick() {
+  const userStore = useLoginUserStore()
+  const calculationStore = useCalculationStore()
+  userStore.logout()
+  calculationStore.clearCalculations()
 }
-  */
 
 export async function fetchRecentCalculations() {
   const userStore = useLoginUserStore()

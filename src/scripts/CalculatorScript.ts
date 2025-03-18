@@ -11,14 +11,15 @@ export default defineComponent({
     const userStore = useLoginUserStore()
     const displayValue = ref<string>('')
     const calculated = ref<boolean>(false)
-    const log = computed(() => userStore.calculations)
+    const calculationStore = useCalculationStore()
+    const log = computed(() => calculationStore.getCalculations())
 
     provide('log', log)
 
     // Hent utregninger når brukeren logger inn
     watchEffect(() => {
       if (userStore.loginStatus) {
-        userStore.fetchRecentCalculationsFromBackend()
+        calculationStore.fetchCalculationsFromBackend()
       }
     })
 
@@ -76,7 +77,6 @@ export default defineComponent({
           }
 
           //userStore.saveCalculation(displayValue.value, result)
-          const calculationStore = useCalculationStore()
           const expression = displayValue.value
           calculationStore.addCalculation({ expression, result })
 
