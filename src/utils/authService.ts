@@ -54,6 +54,7 @@ export async function getJwtToken(username: string, password: string): Promise<s
 }
 
 export async function registerUser(username: string, password: string): Promise<string | null> {
+  console.log('registerUser: ', username)
   const response = await apiClient.post('/register', {
     username: username,
     password: password,

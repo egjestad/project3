@@ -68,14 +68,15 @@ export async function handleLoginClick() {
   }
 }
 
-export async function handleRegisterClick(username: string, password: string) {
+export async function handleRegisterClick() {
   const userStore = useLoginUserStore()
   let token = null
 
-  if (validateUsernameAndPassword(username, password)) return
+  if (!validateUsernameAndPassword(username.value, password.value)) return
 
   try {
-    token = await registerUser(username, password)
+    console.log('Registering user:', username.value)
+    token = await registerUser(username.value, password.value)
   } catch (error) {
     alert(error)
     console.error('Error registering user:', error)
@@ -83,8 +84,11 @@ export async function handleRegisterClick(username: string, password: string) {
   }
 
   if (token) {
-    userStore.saveUserToStore(username, token)
-    alert('Registration successful, user logged in')
+    userStore.saveUserToStore(username.value, token)
+    loginMessage.value = 'User registered and logged in'
+    username.value = ''
+    password.value = ''
+
     router.push('/Home')
   }
 }

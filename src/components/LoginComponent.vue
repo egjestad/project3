@@ -9,7 +9,7 @@
   </div>
   <div id="loginButtonDiv">
     <button id="loginButton" @click="handleLoginClick()">Login</button>
-    <button id="loginButton" @click="handleRegisterClick(username, password)">Register</button>
+    <button id="loginButton" @click="handleRegisterClick()">Register</button>
   </div>
   <p id="loginMessage">{{ loginMessageDisplay }}</p>
 </template>
