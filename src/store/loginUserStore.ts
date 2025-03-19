@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { getJwtToken } from '@/utils/authService'
 
 export const useLoginUserStore = defineStore('loginUser', {
   state: () => ({
@@ -9,23 +8,12 @@ export const useLoginUserStore = defineStore('loginUser', {
     loginStatus: false,
   }),
   actions: {
-    async getTokenAndSaveInStore(username: string, password: string) {
-      try {
-        await getJwtToken(username, password).then((token) => {
-          if (token) {
-            console.log('Token:', token)
-            this.jwtToken = token
-            this.username = username
-            this.loginStatus = true
-            sessionStorage.setItem('username', username)
-            sessionStorage.setItem('jwt_token', token)
-          } else {
-            console.error('Failed to get token')
-          }
-        })
-      } catch (error) {
-        console.error('Error getting token:', error)
-      }
+    async saveUserToStore(username: string, token: string) {
+      this.username = username
+      this.jwtToken = token
+      this.loginStatus = true
+      sessionStorage.setItem('username', username)
+      sessionStorage.setItem('jwt_token', token)
     },
 
     async logout() {

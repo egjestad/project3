@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useLoginUserStore } from '@/store/loginUserStore'
+import { handleLogoutClick } from './scripts/LoginScript'
 
 const loginUserStores = useLoginUserStore()
 loginUserStores.loadUserFromSession()
@@ -18,7 +19,7 @@ loginUserStores.startSessionExpirationCheck()
       <router-link
         id="logoutBtn"
         v-if="loginUserStores.loginStatus"
-        @click="loginUserStores.logout"
+        @click="handleLogoutClick"
         to="/"
         >Logout</router-link
       >

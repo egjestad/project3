@@ -5,19 +5,22 @@
   </div>
   <div id="password">
     <label for="passwordInput" id="passwordLabel">Password</label>
-    <input id="passwordInput" v-model="password" />
+    <input id="passwordInput" v-model="password" type="password" />
   </div>
   <div id="loginButtonDiv">
-    <button id="loginButton" @click="handleLoginClick(username, password)">Login</button>
+    <button id="loginButton" @click="handleLoginClick()">Login</button>
+    <button id="loginButton" @click="handleRegisterClick(username, password)">Register</button>
   </div>
+  <p id="loginMessage">{{ loginMessageDisplay }}</p>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { handleLoginClick } from '@/scripts/LoginScript'
+import { handleRegisterClick } from '@/scripts/LoginScript'
+import { loginMessage, username, password } from '@/scripts/LoginScript'
 
-const username = ref('')
-const password = ref('')
+const loginMessageDisplay = computed(() => loginMessage.value)
 </script>
 
 <style>
