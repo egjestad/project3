@@ -2,7 +2,8 @@
 import { useLoginUserStore } from '@/store/loginUserStore'
 
 const loginUserStores = useLoginUserStore()
-
+loginUserStores.loadUserFromSession()
+loginUserStores.startSessionExpirationCheck()
 </script>
 
 <template>

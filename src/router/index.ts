@@ -21,13 +21,25 @@ const router = createRouter({
       path: '/Calculator',
       name: 'CalculatorView',
       component: CalculatorView,
+      meta: { requiresAuth: true },
     },
     {
       path: '/Contact',
       name: 'ContactView',
       component: ContactView,
+      meta: { requiresAuth: true },
     },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem('jwt_token')
+
+  if (to.meta.requiresAuth && !token) {
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router

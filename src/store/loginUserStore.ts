@@ -44,5 +44,17 @@ export const useLoginUserStore = defineStore('loginUser', {
         this.username = sessionStorage.getItem('username') || ''
       }
     },
+
+    startSessionExpirationCheck() {
+      setInterval(
+        () => {
+          const token = sessionStorage.getItem('jwt_token')
+          if (!token) {
+            this.logout()
+          }
+        },
+        1000 * 5 * 60,
+      )
+    },
   },
 })
