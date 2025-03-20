@@ -46,7 +46,21 @@ export const useCalculationStore = defineStore('calculation', () => {
   async function fetchCalculationsFromBackend() {
     clearCalculations()
     try {
-      const response = await apiClient.get('/recent')
+      const token = sessionStorage.getItem('jwt_token')
+      console.log('Stored JWT Token:', token)
+
+      if (!token) {
+        console.error('No token found in sessionStorage. Cannot authenticate request.')
+        return
+      }
+
+      const response = await apiClient.get('/recent', {
+        headers: {
+          Authorization: `Bearer ${token}`, // Ensure the token is correctly formatted
+        },
+        withCredentials: true,
+      })
+
       if (response.status === 200) {
         setCalculations(response.data)
       }

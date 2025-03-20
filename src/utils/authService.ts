@@ -1,6 +1,8 @@
 import axios from 'axios'
 import type { User } from '@/models/interfaces'
 import { ref } from 'vue'
+import { handleLogoutClick } from '@/scripts/LoginScript'
+import { useLoginUserStore } from '@/store/loginUserStore'
 
 export const loggedIn = ref(false)
 
@@ -21,54 +23,154 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 })
 
 //add autorization header to all requests
 apiClient.interceptors.request.use(
   async (config) => {
     const token = sessionStorage.getItem('jwt_token')
-    if (token) {
+    console.log('token:', token)
+
+    if (token && token !== 'null' && token !== 'undefined') {
       config.headers.Authorization = `Bearer ${token}`
+      console.log('config:', config)
+    } else {
+      console.log('No valid token found. Request may be rejected.')
     }
-    console.log(' config:', config)
     return config
   },
   (error) => Promise.reject(error),
 )
 
-export async function getJwtToken(username: string, password: string): Promise<string | null> {
-  const response = await apiClient.post('/login', {
-    username: username,
-    password: password,
-  })
+// Handle expired tokens and refresh automatically
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      console.log('Unauthorized: Checking for refresh token...')
 
+      try {
+        const refreshResponse = await apiClient.post(
+          '/refresh',
+          {},
+          {
+            withCredentials: true,
+          },
+        )
+
+        if (refreshResponse.status === 200) {
+          const newToken = refreshResponse.data.accessToken
+          sessionStorage.setItem('jwt_token', newToken)
+          error.config.headers.Authorization = `Bearer ${newToken}`
+          return axios(error.config)
+        }
+      } catch (refreshError) {
+        console.log('Failed to refresh token. Logging out...')
+        handleLogoutClick()
+        return Promise.reject(refreshError)
+      }
+    }
+    return Promise.reject(error)
+  },
+)
+
+/*
+
+      const errorMessage = error.response.data
+
+      if (errorMessage === 'Password incorrect' || errorMessage === 'User not found') {
+        return Promise.reject(error)
+      }
+
+      if (errorMessage === 'Token expired or invalid') {
+        console.log('Token expired. Attempting to refresh...')
+        const refreshToken = sessionStorage.getItem('refresh_token')
+
+        if (!refreshToken) {
+          console.log('No refresh token found. Logging out...')
+          handleLogoutClick()
+          return Promise.reject(error)
+        }
+
+        try {
+          const response = await apiClient.post(
+            '/refresh',
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${refreshToken}`,
+              },
+            },
+          )
+
+          if (response.status === 200) {
+            const newToken = response.data.accessToken
+            sessionStorage.setItem('jwt_token', newToken)
+            error.config.headers.Authorization = `Bearer ${newToken}`
+            return axios(error.config)
+          }
+        } catch (refreshError) {
+          console.log('Failed to refresh token. Logging out...')
+          handleLogoutClick()
+          return Promise.reject(refreshError)
+        }
+      }
+    }
+    return Promise.reject(error)
+  },
+)
+  */
+
+export async function getJwtToken(username: string, password: string): Promise<boolean> {
+  const response = await apiClient.post(
+    '/login',
+    {
+      username: username,
+      password: password,
+    },
+    { withCredentials: true },
+  )
+  console.log('getJwtToken: ', response)
+
+  const loginUserStore = useLoginUserStore()
   if (response.status === 200) {
-    return response.data.token
+    const token = response.data.accessToken
+    sessionStorage.setItem('jwt_token', token)
+    loginUserStore.saveUserToStore(username, response.data.accessToken)
+    console.log('User logged in: ', username + ' ' + token)
+    return true
   } else if (response.status === 401) {
     console.log('Invalid username or password')
-    throw new Error('Invalid username or password')
+    return false
   }
 
   console.log('Failed to login user')
-  return null
+  return false
 }
 
-export async function registerUser(username: string, password: string): Promise<string | null> {
+export async function registerUser(username: string, password: string): Promise<boolean> {
   console.log('registerUser: ', username)
-  const response = await apiClient.post('/register', {
-    username: username,
-    password: password,
-  })
+  const response = await apiClient.post(
+    '/register',
+    {
+      username: username,
+      password: password,
+    },
+    { withCredentials: true },
+  )
 
   if (response.status === 200) {
-    return response.data.token
+    sessionStorage.setItem('jwt_token', response.data.accessToken)
+    useLoginUserStore().saveUserToStore(username, response.data)
+    return true
   } else if (response.status === 409) {
     console.log('Username already exists')
-    throw new Error('Username already exists')
+    return false
   }
 
   console.log('Failed to register user')
-  return null
+  return false
 }
 
 export async function userDetails(username: string, token: string): Promise<User | null> {

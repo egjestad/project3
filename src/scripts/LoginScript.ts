@@ -20,6 +20,8 @@ function isLoggedIn() {
 
 function fetchCalculations() {
   // Fetch recent calculations for the user
+  console.log('Authorization Header:', sessionStorage.getItem('jwt_token')?.toString())
+
   const calculationStore = useCalculationStore()
   calculationStore.fetchCalculationsFromBackend()
 }
@@ -35,62 +37,48 @@ function validateUsernameAndPassword(username: string, password: string) {
 }
 
 export async function handleLoginClick() {
-  const userStore = useLoginUserStore()
-  let token = null
-
   if (isLoggedIn()) return
 
   if (!validateUsernameAndPassword(username.value, password.value)) return
 
-  try {
-    token = await getJwtToken(username.value, password.value)
-  } catch (error) {
-    alert(error)
-    console.error('Error logging in:', error)
+  const succes = await getJwtToken(username.value, password.value)
+  console.log('succes:', succes)
+  if (!succes) {
     loginMessage.value = 'Login failed!'
     return
   }
 
-  if (token) {
-    userStore.saveUserToStore(username.value, token)
-    loginMessage.value = 'You are logged in'
-    username.value = ''
-    password.value = ''
-    //alert('Login successful')
-
-    // Fetch recent calculations for the user
-    fetchCalculations()
-
-    router.push('/Home')
-  } else {
-    alert('Error logging in')
-    loginMessage.value = 'Login failed!'
+  const token = sessionStorage.getItem('jwt_token')
+  if (!token) {
+    console.log('No token found. Logging out...')
+    loginMessage.value = 'Error storing token'
+    return
   }
+
+  loginMessage.value = 'You are logged in'
+  username.value = ''
+  password.value = ''
+  //alert('Login successful')
+
+  // Fetch recent calculations for the user
+  fetchCalculations()
+
+  router.push('/Home')
 }
 
 export async function handleRegisterClick() {
-  const userStore = useLoginUserStore()
-  let token = null
-
   if (!validateUsernameAndPassword(username.value, password.value)) return
 
-  try {
-    console.log('Registering user:', username.value)
-    token = await registerUser(username.value, password.value)
-  } catch (error) {
-    alert(error)
-    console.error('Error registering user:', error)
+  if (!(await registerUser(username.value, password.value))) {
+    loginMessage.value = 'Registration failed!'
     return
   }
 
-  if (token) {
-    userStore.saveUserToStore(username.value, token)
-    loginMessage.value = 'User registered and logged in'
-    username.value = ''
-    password.value = ''
+  loginMessage.value = 'User registered and logged in'
+  username.value = ''
+  password.value = ''
 
-    router.push('/Home')
-  }
+  router.push('/Home')
 }
 
 export async function handleLogoutClick() {

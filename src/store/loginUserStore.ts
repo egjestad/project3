@@ -14,11 +14,12 @@ export const useLoginUserStore = defineStore('loginUser', {
       this.loginStatus = true
       sessionStorage.setItem('username', username)
       sessionStorage.setItem('jwt_token', token)
+      console.log('User saved to store:', this.username, this.jwtToken)
     },
 
     async logout() {
-      this.username = ''
       this.loginStatus = false
+      this.username = ''
       this.jwtToken = ''
       sessionStorage.removeItem('username')
       sessionStorage.removeItem('jwt_token')
